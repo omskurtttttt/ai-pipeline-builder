@@ -52,10 +52,17 @@ const useStore = create((set, get) => ({
 
     /* ─── Update Node Data ─── */
     updateNodeData: (nodeId, newData) => {
+        const updatedNodes = get().nodes.map((n) =>
+            n.id === nodeId ? { ...n, data: { ...n.data, ...newData } } : n
+        )
+        const selectedNode = get().selectedNode
         set({
-            nodes: get().nodes.map((n) =>
-                n.id === nodeId ? { ...n, data: { ...n.data, ...newData } } : n
-            ),
+            nodes: updatedNodes,
+            // Keep selectedNode in sync so config panel reflects latest data
+            selectedNode:
+                selectedNode && selectedNode.id === nodeId
+                    ? { ...selectedNode, data: { ...selectedNode.data, ...newData } }
+                    : selectedNode,
         })
     },
 }))
