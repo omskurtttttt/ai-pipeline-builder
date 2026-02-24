@@ -147,3 +147,43 @@
   color: var(--text-tertiary);
   margin-top: -2px;
 }
+
+/* ─── Template Hint ─── */
+.config-hint {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+  padding: 8px 10px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.config-hint code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* ─── Condition Branch Info ─── */
+.config-branches-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  margin-top: 4px;
+}
+
+.branch-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}

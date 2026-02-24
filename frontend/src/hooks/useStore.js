@@ -32,8 +32,11 @@ const useStore = create((set, get) => ({
     addNode: (type, position) => {
         const defaults = {
             inputNode: { label: 'Input', inputText: '' },
-            llmNode: { label: 'LLM', model: 'gpt-3.5-turbo', temperature: 0.7, systemPrompt: '', maxTokens: 1024 },
+            llmNode: { label: 'LLM', model: 'gpt-3.5-turbo', provider: 'openai', temperature: 0.7, systemPrompt: '', maxTokens: 1024 },
             outputNode: { label: 'Output', format: 'text' },
+            textNode: { label: 'Text', template: '' },
+            transformNode: { label: 'Transform', transformType: 'uppercase', pattern: '', replacement: '' },
+            conditionNode: { label: 'Condition', conditionType: 'contains', conditionValue: '' },
         }
 
         const newNode = {

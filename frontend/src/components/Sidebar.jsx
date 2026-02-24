@@ -25,21 +25,36 @@ const NODE_TYPES = [
     icon: '📤',
     color: '#3b82f6',
   },
+  {
+    type: 'textNode',
+    label: 'Text',
+    description: 'Static text / template',
+    icon: '📝',
+    color: '#f59e0b',
+  },
+  {
+    type: 'transformNode',
+    label: 'Transform',
+    description: 'Transform data',
+    icon: '🔄',
+    color: '#ec4899',
+  },
+  {
+    type: 'conditionNode',
+    label: 'Condition',
+    description: 'Branch on condition',
+    icon: '🔀',
+    color: '#06b6d4',
+  },
 ]
 
-/* ─── Node type → color lookup ─── */
-const NODE_COLORS = {
-  inputNode: '#10b981',
-  llmNode: '#7c3aed',
-  outputNode: '#3b82f6',
-}
-
-/* ─── Node type → icon lookup ─── */
-const NODE_ICONS = {
-  inputNode: '📥',
-  llmNode: '🧠',
-  outputNode: '📤',
-}
+/* ─── Node type → color / icon lookups ─── */
+const NODE_COLORS = {}
+const NODE_ICONS = {}
+NODE_TYPES.forEach((n) => {
+  NODE_COLORS[n.type] = n.color
+  NODE_ICONS[n.type] = n.icon
+})
 
 /* ============================================
    CONFIG PANEL — renders fields per node type
@@ -88,7 +103,7 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
           />
         </div>
 
-        {/* — Input Node fields — */}
+        {/* — Input Node — */}
         {type === 'inputNode' && (
           <div className="config-field">
             <label className="config-label">Input Text</label>
@@ -102,7 +117,7 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
           </div>
         )}
 
-        {/* — LLM Node fields — */}
+        {/* — LLM Node — */}
         {type === 'llmNode' && (
           <>
             <div className="config-field">
@@ -187,7 +202,7 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
           </>
         )}
 
-        {/* — Output Node fields — */}
+        {/* — Output Node — */}
         {type === 'outputNode' && (
           <div className="config-field">
             <label className="config-label">Output Format</label>
@@ -201,6 +216,133 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
               <option value="markdown">Markdown</option>
             </select>
           </div>
+        )}
+
+        {/* — Text Node — */}
+        {type === 'textNode' && (
+          <>
+            <div className="config-field">
+              <label className="config-label">Template</label>
+              <textarea
+                className="input"
+                rows={5}
+                value={data.template || ''}
+                onChange={(e) => handleChange('template', e.target.value)}
+                placeholder="Enter text or use {{variable}} for template variables..."
+              />
+            </div>
+            <div className="config-hint">
+              💡 Use <code>{'{{variable}}'}</code> syntax for template variables that get filled from connected inputs.
+            </div>
+          </>
+        )}
+
+        {/* — Transform Node — */}
+        {type === 'transformNode' && (
+          <>
+            <div className="config-field">
+              <label className="config-label">Transform Type</label>
+              <select
+                className="input"
+                value={data.transformType || 'uppercase'}
+                onChange={(e) => handleChange('transformType', e.target.value)}
+              >
+                <option value="uppercase">Uppercase</option>
+                <option value="lowercase">Lowercase</option>
+                <option value="trim">Trim Whitespace</option>
+                <option value="regex_replace">Regex Replace</option>
+                <option value="json_extract">JSON Extract</option>
+                <option value="split">Split</option>
+                <option value="join">Join</option>
+              </select>
+            </div>
+
+            {(data.transformType === 'regex_replace' || data.transformType === 'split' || data.transformType === 'join') && (
+              <div className="config-field">
+                <label className="config-label">
+                  {data.transformType === 'regex_replace' ? 'Regex Pattern' : 'Delimiter'}
+                </label>
+                <input
+                  className="input"
+                  value={data.pattern || ''}
+                  onChange={(e) => handleChange('pattern', e.target.value)}
+                  placeholder={data.transformType === 'regex_replace' ? '/pattern/flags' : ','}
+                />
+              </div>
+            )}
+
+            {data.transformType === 'regex_replace' && (
+              <div className="config-field">
+                <label className="config-label">Replacement</label>
+                <input
+                  className="input"
+                  value={data.replacement || ''}
+                  onChange={(e) => handleChange('replacement', e.target.value)}
+                  placeholder="Replacement string"
+                />
+              </div>
+            )}
+
+            {data.transformType === 'json_extract' && (
+              <div className="config-field">
+                <label className="config-label">JSON Path</label>
+                <input
+                  className="input"
+                  value={data.pattern || ''}
+                  onChange={(e) => handleChange('pattern', e.target.value)}
+                  placeholder="e.g. data.results[0].text"
+                />
+              </div>
+            )}
+          </>
+        )}
+
+        {/* — Condition Node — */}
+        {type === 'conditionNode' && (
+          <>
+            <div className="config-field">
+              <label className="config-label">Condition Type</label>
+              <select
+                className="input"
+                value={data.conditionType || 'contains'}
+                onChange={(e) => handleChange('conditionType', e.target.value)}
+              >
+                <option value="contains">Contains</option>
+                <option value="equals">Equals</option>
+                <option value="not_equals">Not Equals</option>
+                <option value="starts_with">Starts With</option>
+                <option value="ends_with">Ends With</option>
+                <option value="regex_match">Regex Match</option>
+                <option value="length_gt">Length Greater Than</option>
+                <option value="length_lt">Length Less Than</option>
+                <option value="is_empty">Is Empty</option>
+                <option value="not_empty">Not Empty</option>
+              </select>
+            </div>
+
+            {!['is_empty', 'not_empty'].includes(data.conditionType) && (
+              <div className="config-field">
+                <label className="config-label">Value</label>
+                <input
+                  className="input"
+                  value={data.conditionValue || ''}
+                  onChange={(e) => handleChange('conditionValue', e.target.value)}
+                  placeholder={data.conditionType === 'regex_match' ? '/pattern/flags' : 'Compare value'}
+                />
+              </div>
+            )}
+
+            <div className="config-branches-info">
+              <div className="branch-info">
+                <span className="branch-dot true-dot" />
+                <span>True → right output (top)</span>
+              </div>
+              <div className="branch-info">
+                <span className="branch-dot false-dot" />
+                <span>False → right output (bottom)</span>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </div>

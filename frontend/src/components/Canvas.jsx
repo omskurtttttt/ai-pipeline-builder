@@ -11,6 +11,9 @@ import '@xyflow/react/dist/style.css'
 import InputNode from './nodes/InputNode'
 import LLMNode from './nodes/LLMNode'
 import OutputNode from './nodes/OutputNode'
+import TextNode from './nodes/TextNode'
+import TransformNode from './nodes/TransformNode'
+import ConditionNode from './nodes/ConditionNode'
 import useStore from '../hooks/useStore'
 import './Canvas.css'
 
@@ -19,6 +22,9 @@ const nodeTypes = {
   inputNode: InputNode,
   llmNode: LLMNode,
   outputNode: OutputNode,
+  textNode: TextNode,
+  transformNode: TransformNode,
+  conditionNode: ConditionNode,
 }
 
 export default function Canvas() {
@@ -105,6 +111,9 @@ export default function Canvas() {
               case 'inputNode': return '#10b981'
               case 'llmNode': return '#7c3aed'
               case 'outputNode': return '#3b82f6'
+              case 'textNode': return '#f59e0b'
+              case 'transformNode': return '#ec4899'
+              case 'conditionNode': return '#06b6d4'
               default: return '#64748b'
             }
           }}
