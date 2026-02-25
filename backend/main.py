@@ -1,10 +1,24 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from database import engine, Base
+from routers import pipelines
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Create tables on startup
+    Base.metadata.create_all(bind=engine)
+    yield
+
 
 app = FastAPI(
     title="AI Pipeline Builder",
     description="Visual AI Pipeline Builder — Backend API",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 # CORS — allow frontend dev server
@@ -15,6 +29,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(pipelines.router)
 
 
 @app.get("/api/health")

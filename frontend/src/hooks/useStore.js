@@ -8,6 +8,8 @@ const useStore = create((set, get) => ({
     /* ─── Nodes & Edges ─── */
     nodes: [],
     edges: [],
+    setNodes: (nodes) => set({ nodes }),
+    setEdges: (edges) => set({ edges }),
 
     onNodesChange: (changes) => {
         set({ nodes: applyNodeChanges(changes, get().nodes) })
