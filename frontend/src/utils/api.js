@@ -40,6 +40,19 @@ export async function deletePipeline(id) {
     return request(`/pipelines/${id}`, { method: 'DELETE' })
 }
 
+/* ─── Execution ─── */
+
+export async function executePipeline(nodes, edges) {
+    return request('/execute', {
+        method: 'POST',
+        body: JSON.stringify({ nodes, edges }),
+    })
+}
+
+export async function executeSavedPipeline(id) {
+    return request(`/execute/${id}`, { method: 'POST' })
+}
+
 /* ─── Health ─── */
 export async function checkHealth() {
     return request('/health')

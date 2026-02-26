@@ -70,6 +70,13 @@ const useStore = create((set, get) => ({
                     : selectedNode,
         })
     },
+
+    /* ─── Execution ─── */
+    isExecuting: false,
+    executionResults: null,  // { status, results, errors, duration_ms, ... }
+    setExecuting: (running) => set({ isExecuting: running }),
+    setExecutionResults: (results) => set({ executionResults: results }),
+    clearExecutionResults: () => set({ executionResults: null }),
 }))
 
 export default useStore

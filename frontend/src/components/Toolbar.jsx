@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import useStore from '../hooks/useStore'
-import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline } from '../utils/api'
+import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline, executePipeline } from '../utils/api'
 import './Toolbar.css'
 
 export default function Toolbar() {
@@ -8,6 +8,9 @@ export default function Toolbar() {
   const edges = useStore((s) => s.edges)
   const setNodes = useStore((s) => s.setNodes)
   const setEdges = useStore((s) => s.setEdges)
+  const isExecuting = useStore((s) => s.isExecuting)
+  const setExecuting = useStore((s) => s.setExecuting)
+  const setExecutionResults = useStore((s) => s.setExecutionResults)
 
   const [pipelineName, setPipelineName] = useState('Untitled Pipeline')
   const [pipelineId, setPipelineId] = useState(null)
@@ -93,6 +96,29 @@ export default function Toolbar() {
     showStatus('info', 'New pipeline created')
   }, [setNodes, setEdges, showStatus])
 
+  /* ─── Run Pipeline ─── */
+  const handleRun = useCallback(async () => {
+    if (nodes.length === 0) {
+      showStatus('error', 'Add some nodes before running')
+      return
+    }
+    setExecuting(true)
+    try {
+      const result = await executePipeline(nodes, edges)
+      setExecutionResults(result)
+      if (result.status === 'completed') {
+        showStatus('success', `Pipeline executed in ${result.duration_ms}ms`)
+      } else if (result.status === 'completed_with_errors') {
+        showStatus('error', `Completed with ${result.errors.length} error(s)`)
+      } else {
+        showStatus('error', result.error || 'Execution failed')
+      }
+    } catch (err) {
+      showStatus('error', err.message)
+    }
+    setExecuting(false)
+  }, [nodes, edges, showStatus, setExecuting, setExecutionResults])
+
   /* ─── Keyboard shortcuts ─── */
   useEffect(() => {
     const handler = (e) => {
@@ -100,10 +126,14 @@ export default function Toolbar() {
         e.preventDefault()
         handleSave()
       }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault()
+        handleRun()
+      }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [handleSave])
+  }, [handleSave, handleRun])
 
   return (
     <header className="toolbar">
@@ -140,8 +170,8 @@ export default function Toolbar() {
           <span>📂</span> Load
         </button>
         <div className="toolbar-divider" />
-        <button className="btn btn-primary" title="Run Pipeline">
-          <span>▶️</span> Run
+        <button className="btn btn-primary" onClick={handleRun} disabled={isExecuting} title="Run Pipeline (Ctrl+Enter)">
+          <span>{isExecuting ? '⏳' : '▶️'}</span> {isExecuting ? 'Running...' : 'Run'}
         </button>
       </div>
 
