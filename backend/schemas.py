@@ -37,3 +37,18 @@ class PipelineListItem(BaseModel):
     updated_at: Optional[datetime]
 
     model_config = {"from_attributes": True}
+
+
+class ExecutionRequest(BaseModel):
+    """For executing a pipeline directly (without saving first)."""
+    nodes: list[dict[str, Any]]
+    edges: list[dict[str, Any]]
+
+
+class ExecutionResponse(BaseModel):
+    status: str
+    results: dict[str, Any] = {}
+    errors: list[dict[str, Any]] = []
+    duration_ms: int = 0
+    node_count: int = 0
+    executed_count: int = 0
