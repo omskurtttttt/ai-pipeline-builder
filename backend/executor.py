@@ -7,8 +7,11 @@ Each node type has a dedicated runner function.
 
 import re
 import json
+import asyncio
 from collections import deque
 from datetime import datetime
+
+from llm_service import call_llm, LLMError
 
 
 class ExecutionContext:
@@ -190,22 +193,29 @@ def run_condition_node(data: dict, inputs: list[str], edges: list[dict], node_id
     }
 
 
-def run_llm_node(data: dict, inputs: list[str]) -> str:
-    """LLM node — placeholder until Day 7 integration."""
+async def run_llm_node(data: dict, inputs: list[str]) -> str:
+    """LLM node — calls the configured LLM provider."""
     provider = data.get("provider", "openai")
     model = data.get("model", "gpt-3.5-turbo")
     prompt = "\n".join(inputs) if inputs else ""
     system_prompt = data.get("systemPrompt", "")
+    temperature = data.get("temperature", 0.7)
+    max_tokens = data.get("maxTokens", 1024)
 
-    # Placeholder — returns a mock response
-    return (
-        f"[LLM Placeholder]\n"
-        f"Provider: {provider}\n"
-        f"Model: {model}\n"
-        f"System: {system_prompt[:80]}{'...' if len(system_prompt) > 80 else ''}\n"
-        f"Input: {prompt[:120]}{'...' if len(prompt) > 120 else ''}\n"
-        f"(Real LLM calls will be enabled in Day 7)"
-    )
+    if not prompt.strip():
+        return "[No input provided to LLM]"
+
+    try:
+        return await call_llm(
+            provider=provider,
+            model=model,
+            prompt=prompt,
+            system_prompt=system_prompt,
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+    except LLMError as e:
+        raise ValueError(str(e))
 
 
 def run_output_node(data: dict, inputs: list[str]) -> str:
@@ -234,13 +244,12 @@ NODE_RUNNERS = {
     "inputNode": run_input_node,
     "textNode": run_text_node,
     "transformNode": run_transform_node,
-    "llmNode": run_llm_node,
     "outputNode": run_output_node,
-    # conditionNode handled separately
+    # conditionNode and llmNode handled separately (async)
 }
 
 
-def execute_pipeline(nodes: list[dict], edges: list[dict]) -> dict:
+async def execute_pipeline(nodes: list[dict], edges: list[dict]) -> dict:
     """Execute an entire pipeline and return results."""
     ctx = ExecutionContext(nodes, edges)
     ctx.start_time = datetime.utcnow()
@@ -269,6 +278,15 @@ def execute_pipeline(nodes: list[dict], edges: list[dict]) -> dict:
                 result = run_condition_node(data, inputs, edges, node_id)
                 ctx.results[node_id] = {
                     **result,
+                    "status": "completed",
+                    "node_type": node_type,
+                    "duration_ms": round((datetime.utcnow() - node_start).total_seconds() * 1000),
+                }
+            elif node_type == "llmNode":
+                # LLM nodes are async
+                output = await run_llm_node(data, inputs)
+                ctx.results[node_id] = {
+                    "output": output,
                     "status": "completed",
                     "node_type": node_type,
                     "duration_ms": round((datetime.utcnow() - node_start).total_seconds() * 1000),
