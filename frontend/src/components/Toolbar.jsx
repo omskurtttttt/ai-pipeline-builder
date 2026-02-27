@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import useStore from '../hooks/useStore'
-import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline, executePipeline } from '../utils/api'
+import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline, executePipeline, getProviders } from '../utils/api'
 import './Toolbar.css'
 
 export default function Toolbar() {
@@ -18,6 +18,14 @@ export default function Toolbar() {
   const [savedPipelines, setSavedPipelines] = useState([])
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState(null) // { type, message }
+  const [providers, setProviders] = useState({ openai: false, gemini: false })
+
+  /* ─── Check LLM provider availability on mount ─── */
+  useEffect(() => {
+    getProviders()
+      .then((data) => setProviders(data.providers))
+      .catch(() => {}) // silently fail if backend isn't running
+  }, [])
 
   /* ─── Show status message ─── */
   const showStatus = useCallback((type, message) => {
@@ -170,6 +178,10 @@ export default function Toolbar() {
           <span>📂</span> Load
         </button>
         <div className="toolbar-divider" />
+        <div className="provider-status" title={`OpenAI: ${providers.openai ? 'configured' : 'not set'} | Gemini: ${providers.gemini ? 'configured' : 'not set'}`}>
+          <span className={`provider-dot ${providers.openai ? 'active' : ''}`}>O</span>
+          <span className={`provider-dot ${providers.gemini ? 'active' : ''}`}>G</span>
+        </div>
         <button className="btn btn-primary" onClick={handleRun} disabled={isExecuting} title="Run Pipeline (Ctrl+Enter)">
           <span>{isExecuting ? '⏳' : '▶️'}</span> {isExecuting ? 'Running...' : 'Run'}
         </button>

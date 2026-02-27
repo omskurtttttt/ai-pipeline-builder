@@ -53,6 +53,12 @@ export async function executeSavedPipeline(id) {
     return request(`/execute/${id}`, { method: 'POST' })
 }
 
+/* ─── LLM Providers ─── */
+
+export async function getProviders() {
+    return request('/llm/providers')
+}
+
 /* ─── Health ─── */
 export async function checkHealth() {
     return request('/health')
