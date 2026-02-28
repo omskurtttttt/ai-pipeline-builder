@@ -46,6 +46,13 @@ const NODE_TYPES = [
     icon: '🔀',
     color: '#06b6d4',
   },
+  {
+    type: 'apiNode',
+    label: 'API',
+    description: 'HTTP request',
+    icon: '🌐',
+    color: '#f97316',
+  },
 ]
 
 /* ─── Node type → color / icon lookups ─── */
@@ -341,6 +348,70 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
                 <span className="branch-dot false-dot" />
                 <span>False → right output (bottom)</span>
               </div>
+            </div>
+          </>
+        )}
+
+        {/* — API Node — */}
+        {type === 'apiNode' && (
+          <>
+            <div className="config-field">
+              <label className="config-label">Method</label>
+              <select
+                className="input"
+                value={data.method || 'GET'}
+                onChange={(e) => handleChange('method', e.target.value)}
+              >
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="PATCH">PATCH</option>
+                <option value="DELETE">DELETE</option>
+              </select>
+            </div>
+
+            <div className="config-field">
+              <label className="config-label">URL</label>
+              <input
+                className="input"
+                value={data.url || ''}
+                onChange={(e) => handleChange('url', e.target.value)}
+                placeholder="https://api.example.com/data"
+              />
+            </div>
+
+            <div className="config-field">
+              <label className="config-label">Headers (JSON)</label>
+              <textarea
+                className="input"
+                rows={3}
+                value={typeof data.headers === 'object' ? JSON.stringify(data.headers, null, 2) : data.headers || ''}
+                onChange={(e) => {
+                  try {
+                    handleChange('headers', JSON.parse(e.target.value))
+                  } catch {
+                    // Let user type freely — only save when valid JSON
+                  }
+                }}
+                placeholder='{"Authorization": "Bearer ..."}'
+              />
+            </div>
+
+            {['POST', 'PUT', 'PATCH'].includes(data.method) && (
+              <div className="config-field">
+                <label className="config-label">Request Body</label>
+                <textarea
+                  className="input"
+                  rows={4}
+                  value={data.body || ''}
+                  onChange={(e) => handleChange('body', e.target.value)}
+                  placeholder='Use {{input}} for connected input data'
+                />
+              </div>
+            )}
+
+            <div className="config-hint">
+              💡 Connected input will be appended as query params (GET) or used as body (POST/PUT/PATCH).
             </div>
           </>
         )}

@@ -32,6 +32,7 @@
 .text-node { border-top: 2px solid #f59e0b; }
 .transform-node { border-top: 2px solid #ec4899; }
 .condition-node { border-top: 2px solid #06b6d4; }
+.api-node { border-top: 2px solid #f97316; }
 
 /* ============================================
    NODE HEADER

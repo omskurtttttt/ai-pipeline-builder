@@ -39,6 +39,7 @@ const useStore = create((set, get) => ({
             textNode: { label: 'Text', template: '' },
             transformNode: { label: 'Transform', transformType: 'uppercase', pattern: '', replacement: '' },
             conditionNode: { label: 'Condition', conditionType: 'contains', conditionValue: '' },
+            apiNode: { label: 'API', method: 'GET', url: '', headers: {}, body: '' },
         }
 
         const newNode = {

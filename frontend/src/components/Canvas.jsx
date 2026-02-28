@@ -14,6 +14,7 @@ import OutputNode from './nodes/OutputNode'
 import TextNode from './nodes/TextNode'
 import TransformNode from './nodes/TransformNode'
 import ConditionNode from './nodes/ConditionNode'
+import APINode from './nodes/APINode'
 import useStore from '../hooks/useStore'
 import './Canvas.css'
 
@@ -25,6 +26,7 @@ const nodeTypes = {
   textNode: TextNode,
   transformNode: TransformNode,
   conditionNode: ConditionNode,
+  apiNode: APINode,
 }
 
 export default function Canvas() {
@@ -114,6 +116,7 @@ export default function Canvas() {
               case 'textNode': return '#f59e0b'
               case 'transformNode': return '#ec4899'
               case 'conditionNode': return '#06b6d4'
+              case 'apiNode': return '#f97316'
               default: return '#64748b'
             }
           }}
