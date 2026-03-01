@@ -2,6 +2,7 @@ import { ReactFlowProvider } from '@xyflow/react'
 import Canvas from './components/Canvas'
 import Sidebar from './components/Sidebar'
 import Toolbar from './components/Toolbar'
+import ResultsPanel from './components/ResultsPanel'
 import './App.css'
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
           <Canvas />
         </ReactFlowProvider>
       </div>
+
+      {/* ── Execution Results ── */}
+      <ResultsPanel />
     </div>
   )
 }
