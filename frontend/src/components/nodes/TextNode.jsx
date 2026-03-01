@@ -3,7 +3,7 @@ import './NodeStyles.css'
 
 export default function TextNode({ data, selected }) {
   return (
-    <div className={`custom-node text-node ${selected ? 'selected' : ''}`}>
+    <div className={`custom-node text-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
         <div className="node-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b' }}>
           📝

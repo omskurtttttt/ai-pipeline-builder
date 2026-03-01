@@ -3,7 +3,7 @@ import './NodeStyles.css'
 
 export default function ConditionNode({ data, selected }) {
   return (
-    <div className={`custom-node condition-node ${selected ? 'selected' : ''}`}>
+    <div className={`custom-node condition-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
         <div className="node-icon" style={{ background: 'rgba(6, 182, 212, 0.15)', color: '#06b6d4' }}>
           🔀

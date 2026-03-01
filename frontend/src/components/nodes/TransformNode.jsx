@@ -15,7 +15,7 @@ export default function TransformNode({ data, selected }) {
   const transformType = data.transformType || 'uppercase'
 
   return (
-    <div className={`custom-node transform-node ${selected ? 'selected' : ''}`}>
+    <div className={`custom-node transform-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
         <div className="node-icon" style={{ background: 'rgba(236, 72, 153, 0.15)', color: '#ec4899' }}>
           🔄

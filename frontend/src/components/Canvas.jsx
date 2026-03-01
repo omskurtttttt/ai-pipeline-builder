@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useMemo } from 'react'
 import {
   ReactFlow,
   Controls,
@@ -40,6 +40,24 @@ export default function Canvas() {
     addNode,
     setSelectedNode,
   } = useStore()
+  const executionResults = useStore((s) => s.executionResults)
+
+  /* ─── Inject execution status into nodes ─── */
+  const enhancedNodes = useMemo(() => {
+    if (!executionResults?.results) return nodes
+    return nodes.map((node) => {
+      const result = executionResults.results[node.id]
+      if (!result) return node
+      return {
+        ...node,
+        data: {
+          ...node.data,
+          _executionStatus: result.status,
+          _executionDuration: result.duration_ms,
+        },
+      }
+    })
+  }, [nodes, executionResults])
 
   /* ─── Handle drop from sidebar ─── */
   const onDragOver = useCallback((event) => {
@@ -81,7 +99,7 @@ export default function Canvas() {
   return (
     <div className="canvas-wrapper" ref={reactFlowWrapper}>
       <ReactFlow
-        nodes={nodes}
+        nodes={enhancedNodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}

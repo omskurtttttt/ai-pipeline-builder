@@ -14,7 +14,7 @@ export default function APINode({ data, selected }) {
   const color = METHOD_COLORS[method] || '#64748b'
 
   return (
-    <div className={`custom-node api-node ${selected ? 'selected' : ''}`}>
+    <div className={`custom-node api-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
         <div className="node-icon" style={{ background: `${color}15`, color }}>
           🌐

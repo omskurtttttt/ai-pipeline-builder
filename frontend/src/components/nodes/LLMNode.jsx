@@ -3,7 +3,7 @@ import './NodeStyles.css'
 
 export default function LLMNode({ data, selected }) {
   return (
-    <div className={`custom-node llm-node ${selected ? 'selected' : ''}`}>
+    <div className={`custom-node llm-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
         <div className="node-icon" style={{ background: 'rgba(124, 58, 237, 0.15)', color: '#7c3aed' }}>
           🧠

@@ -3,7 +3,7 @@ import './NodeStyles.css'
 
 export default function InputNode({ data, selected }) {
   return (
-    <div className={`custom-node input-node ${selected ? 'selected' : ''}`}>
+    <div className={`custom-node input-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
         <div className="node-icon" style={{ background: 'rgba(16, 185, 129, 0.15)', color: '#10b981' }}>
           📥
