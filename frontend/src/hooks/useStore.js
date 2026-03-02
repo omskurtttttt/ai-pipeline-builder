@@ -40,6 +40,7 @@ const useStore = create((set, get) => ({
             transformNode: { label: 'Transform', transformType: 'uppercase', pattern: '', replacement: '' },
             conditionNode: { label: 'Condition', conditionType: 'contains', conditionValue: '' },
             apiNode: { label: 'API', method: 'GET', url: '', headers: {}, body: '' },
+            fileSaveNode: { label: 'File Save', filename: 'output', format: 'text' },
         }
 
         const newNode = {

@@ -15,6 +15,7 @@ import TextNode from './nodes/TextNode'
 import TransformNode from './nodes/TransformNode'
 import ConditionNode from './nodes/ConditionNode'
 import APINode from './nodes/APINode'
+import FileSaveNode from './nodes/FileSaveNode'
 import useStore from '../hooks/useStore'
 import './Canvas.css'
 
@@ -27,6 +28,7 @@ const nodeTypes = {
   transformNode: TransformNode,
   conditionNode: ConditionNode,
   apiNode: APINode,
+  fileSaveNode: FileSaveNode,
 }
 
 export default function Canvas() {
@@ -135,6 +137,7 @@ export default function Canvas() {
               case 'transformNode': return '#ec4899'
               case 'conditionNode': return '#06b6d4'
               case 'apiNode': return '#f97316'
+              case 'fileSaveNode': return '#a855f7'
               default: return '#64748b'
             }
           }}

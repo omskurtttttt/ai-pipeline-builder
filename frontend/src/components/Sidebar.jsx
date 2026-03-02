@@ -53,6 +53,13 @@ const NODE_TYPES = [
     icon: '🌐',
     color: '#f97316',
   },
+  {
+    type: 'fileSaveNode',
+    label: 'File Save',
+    description: 'Save output to file',
+    icon: '💾',
+    color: '#a855f7',
+  },
 ]
 
 /* ─── Node type → color / icon lookups ─── */
@@ -412,6 +419,39 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
 
             <div className="config-hint">
               💡 Connected input will be appended as query params (GET) or used as body (POST/PUT/PATCH).
+            </div>
+          </>
+        )}
+
+        {/* — File Save Node — */}
+        {type === 'fileSaveNode' && (
+          <>
+            <div className="config-field">
+              <label className="config-label">Filename</label>
+              <input
+                className="input"
+                value={data.filename || ''}
+                onChange={(e) => handleChange('filename', e.target.value)}
+                placeholder="output"
+              />
+            </div>
+
+            <div className="config-field">
+              <label className="config-label">Format</label>
+              <select
+                className="input"
+                value={data.format || 'text'}
+                onChange={(e) => handleChange('format', e.target.value)}
+              >
+                <option value="text">Plain Text (.txt)</option>
+                <option value="json">JSON (.json)</option>
+                <option value="csv">CSV (.csv)</option>
+                <option value="markdown">Markdown (.md)</option>
+              </select>
+            </div>
+
+            <div className="config-hint">
+              💡 The file will be available for download after execution completes.
             </div>
           </>
         )}

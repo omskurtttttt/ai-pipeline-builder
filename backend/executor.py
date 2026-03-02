@@ -298,6 +298,33 @@ async def run_api_node(data: dict, inputs: list[str]) -> str:
         raise ValueError(f"Request failed: {e}")
 
 
+def run_file_save_node(data: dict, inputs: list[str]) -> str:
+    """File Save node — captures output for download."""
+    text = "\n".join(inputs) if inputs else ""
+    fmt = data.get("format", "text")
+    filename = data.get("filename", "output")
+
+    ext_map = {"text": "txt", "json": "json", "csv": "csv", "markdown": "md"}
+    ext = ext_map.get(fmt, "txt")
+    full_filename = f"{filename}.{ext}"
+
+    # Format output based on type
+    if fmt == "json":
+        try:
+            parsed = json.loads(text)
+            text = json.dumps(parsed, indent=2)
+        except json.JSONDecodeError:
+            text = json.dumps({"output": text}, indent=2)
+
+    # Return as structured output with metadata
+    return json.dumps({
+        "filename": full_filename,
+        "format": fmt,
+        "content": text,
+        "size_bytes": len(text.encode("utf-8")),
+    })
+
+
 # ═══════════════════════════════════════════
 #  MAIN EXECUTOR
 # ═══════════════════════════════════════════
@@ -307,7 +334,8 @@ NODE_RUNNERS = {
     "textNode": run_text_node,
     "transformNode": run_transform_node,
     "outputNode": run_output_node,
-    # conditionNode and llmNode handled separately (async)
+    "fileSaveNode": run_file_save_node,
+    # conditionNode, llmNode, apiNode handled separately (async)
 }
 
 

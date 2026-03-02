@@ -58,6 +58,7 @@
 .transform-node { border-top: 2px solid #ec4899; }
 .condition-node { border-top: 2px solid #06b6d4; }
 .api-node { border-top: 2px solid #f97316; }
+.filesave-node { border-top: 2px solid #a855f7; }
 
 /* ============================================
    NODE HEADER
