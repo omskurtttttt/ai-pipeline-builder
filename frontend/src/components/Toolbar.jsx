@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import useStore from '../hooks/useStore'
 import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline, executePipeline, getProviders } from '../utils/api'
 import './Toolbar.css'
@@ -127,6 +127,58 @@ export default function Toolbar() {
     setExecuting(false)
   }, [nodes, edges, showStatus, setExecuting, setExecutionResults])
 
+  /* ─── Export pipeline as JSON ─── */
+  const handleExport = useCallback(() => {
+    const pipeline = {
+      name: pipelineName,
+      nodes,
+      edges,
+      exportedAt: new Date().toISOString(),
+      version: '0.1.0',
+    }
+    const blob = new Blob([JSON.stringify(pipeline, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${pipelineName.replace(/\s+/g, '-').toLowerCase()}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+    showStatus('success', 'Pipeline exported!')
+  }, [nodes, edges, pipelineName, showStatus])
+
+  /* ─── Import pipeline from JSON ─── */
+  const fileInputRef = useRef(null)
+  const handleImport = useCallback(() => {
+    fileInputRef.current?.click()
+  }, [])
+
+  const handleFileChange = useCallback((e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (evt) => {
+      try {
+        const pipeline = JSON.parse(evt.target.result)
+        if (pipeline.nodes && pipeline.edges) {
+          setNodes(pipeline.nodes)
+          setEdges(pipeline.edges)
+          setPipelineName(pipeline.name || 'Imported Pipeline')
+          setPipelineId(null)
+          showStatus('success', `Imported "${pipeline.name || 'pipeline'}"!`)
+        } else {
+          showStatus('error', 'Invalid pipeline file')
+        }
+      } catch {
+        showStatus('error', 'Failed to parse pipeline file')
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = '' // reset so same file can be imported again
+  }, [setNodes, setEdges, showStatus])
+
+  /* ─── Keyboard shortcuts help ─── */
+  const [showShortcuts, setShowShortcuts] = useState(false)
+
   /* ─── Keyboard shortcuts ─── */
   useEffect(() => {
     const handler = (e) => {
@@ -138,10 +190,14 @@ export default function Toolbar() {
         e.preventDefault()
         handleRun()
       }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        e.preventDefault()
+        handleExport()
+      }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [handleSave, handleRun])
+  }, [handleSave, handleRun, handleExport])
 
   return (
     <header className="toolbar">
@@ -178,6 +234,20 @@ export default function Toolbar() {
           <span>📂</span> Load
         </button>
         <div className="toolbar-divider" />
+        <button className="btn" onClick={handleExport} title="Export Pipeline as JSON (Ctrl+E)">
+          <span>⬇️</span> Export
+        </button>
+        <button className="btn" onClick={handleImport} title="Import Pipeline from JSON">
+          <span>⬆️</span> Import
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+        />
+        <div className="toolbar-divider" />
         <div className="provider-status" title={`OpenAI: ${providers.openai ? 'configured' : 'not set'} | Gemini: ${providers.gemini ? 'configured' : 'not set'}`}>
           <span className={`provider-dot ${providers.openai ? 'active' : ''}`}>O</span>
           <span className={`provider-dot ${providers.gemini ? 'active' : ''}`}>G</span>
@@ -185,7 +255,22 @@ export default function Toolbar() {
         <button className="btn btn-primary" onClick={handleRun} disabled={isExecuting} title="Run Pipeline (Ctrl+Enter)">
           <span>{isExecuting ? '⏳' : '▶️'}</span> {isExecuting ? 'Running...' : 'Run'}
         </button>
+        <div className="toolbar-divider" />
+        <button className="btn btn-ghost" onClick={() => setShowShortcuts(!showShortcuts)} title="Keyboard Shortcuts">
+          ⌨️
+        </button>
       </div>
+
+      {/* ── Shortcuts Tooltip ── */}
+      {showShortcuts && (
+        <div className="shortcuts-panel">
+          <div className="shortcuts-title">Keyboard Shortcuts</div>
+          <div className="shortcut-row"><kbd>Ctrl+S</kbd> <span>Save pipeline</span></div>
+          <div className="shortcut-row"><kbd>Ctrl+Enter</kbd> <span>Run pipeline</span></div>
+          <div className="shortcut-row"><kbd>Ctrl+E</kbd> <span>Export as JSON</span></div>
+          <div className="shortcut-row"><kbd>Delete</kbd> <span>Delete selected</span></div>
+        </div>
+      )}
 
       {/* ── Status Toast ── */}
       {status && (
