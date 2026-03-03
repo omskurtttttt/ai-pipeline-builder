@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import useStore from '../hooks/useStore'
-import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline, executePipeline, getProviders } from '../utils/api'
+import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline, executePipeline, getProviders, validatePipeline } from '../utils/api'
 import './Toolbar.css'
 
 export default function Toolbar() {
@@ -178,6 +178,21 @@ export default function Toolbar() {
 
   /* ─── Keyboard shortcuts help ─── */
   const [showShortcuts, setShowShortcuts] = useState(false)
+  const [validationResults, setValidationResults] = useState(null)
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
+
+  /* ─── Analyze pipeline ─── */
+  const handleAnalyze = useCallback(async () => {
+    setIsAnalyzing(true)
+    setValidationResults(null)
+    try {
+      const result = await validatePipeline(nodes, edges)
+      setValidationResults(result)
+    } catch (err) {
+      showStatus('error', 'Validation failed: ' + err.message)
+    }
+    setIsAnalyzing(false)
+  }, [nodes, edges, showStatus])
 
   /* ─── Keyboard shortcuts ─── */
   useEffect(() => {
@@ -255,20 +270,41 @@ export default function Toolbar() {
         <button className="btn btn-primary" onClick={handleRun} disabled={isExecuting} title="Run Pipeline (Ctrl+Enter)">
           <span>{isExecuting ? '⏳' : '▶️'}</span> {isExecuting ? 'Running...' : 'Run'}
         </button>
+        <button className={`btn ${validationResults ? (validationResults.valid ? 'btn-success' : 'btn-warning') : ''}`} onClick={handleAnalyze} disabled={isAnalyzing} title="Analyze Pipeline">
+          <span>{isAnalyzing ? '⏳' : '🔍'}</span> {isAnalyzing ? 'Analyzing...' : 'Analyze'}
+        </button>
         <div className="toolbar-divider" />
-        <button className="btn btn-ghost" onClick={() => setShowShortcuts(!showShortcuts)} title="Keyboard Shortcuts">
+        <button className="btn btn-ghost" onClick={() => { setShowShortcuts(!showShortcuts); setValidationResults(null) }} title="Keyboard Shortcuts">
           ⌨️
         </button>
       </div>
 
-      {/* ── Shortcuts Tooltip ── */}
-      {showShortcuts && (
-        <div className="shortcuts-panel">
-          <div className="shortcuts-title">Keyboard Shortcuts</div>
-          <div className="shortcut-row"><kbd>Ctrl+S</kbd> <span>Save pipeline</span></div>
-          <div className="shortcut-row"><kbd>Ctrl+Enter</kbd> <span>Run pipeline</span></div>
-          <div className="shortcut-row"><kbd>Ctrl+E</kbd> <span>Export as JSON</span></div>
-          <div className="shortcut-row"><kbd>Delete</kbd> <span>Delete selected</span></div>
+      {/* ── Validation Results Dropdown ── */}
+      {validationResults && (
+        <div className="validation-panel">
+          <div className="validation-header">
+            <div className="validation-summary">
+              {validationResults.valid ? '✅' : '⚠️'} {validationResults.summary}
+            </div>
+            <button className="config-close" onClick={() => setValidationResults(null)}>✕</button>
+          </div>
+          {validationResults.issues.length > 0 && (
+            <div className="validation-issues">
+              {validationResults.issues.map((issue, i) => (
+                <div key={i} className={`validation-issue severity-${issue.severity}`}>
+                  <span className="issue-icon">
+                    {issue.severity === 'error' && '❌'}
+                    {issue.severity === 'warning' && '⚠️'}
+                    {issue.severity === 'info' && 'ℹ️'}
+                  </span>
+                  <span>{issue.message}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="validation-footer">
+            {validationResults.node_count} nodes · {validationResults.edge_count} edges
+          </div>
         </div>
       )}
 

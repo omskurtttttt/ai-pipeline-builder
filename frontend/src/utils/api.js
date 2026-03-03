@@ -59,6 +59,15 @@ export async function getProviders() {
     return request('/llm/providers')
 }
 
+/* ─── Validation ─── */
+
+export async function validatePipeline(nodes, edges) {
+    return request('/validate', {
+        method: 'POST',
+        body: JSON.stringify({ nodes, edges }),
+    })
+}
+
 /* ─── Health ─── */
 export async function checkHealth() {
     return request('/health')
