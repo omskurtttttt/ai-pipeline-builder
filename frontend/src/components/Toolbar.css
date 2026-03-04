@@ -254,7 +254,7 @@
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   padding: 12px 16px;
-  min-width: 200px;
+  min-width: 260px;
   box-shadow: var(--shadow-lg);
   animation: fadeIn 0.15s ease-out;
   z-index: 200;
@@ -273,7 +273,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 0;
+  gap: 16px;
+  padding: 5px 0;
   font-size: 12px;
   color: var(--text-secondary);
 }

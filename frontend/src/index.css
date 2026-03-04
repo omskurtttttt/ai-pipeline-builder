@@ -224,6 +224,12 @@ select.input {
   padding-right: 32px;
 }
 
+select.input option {
+  background: #1a1a2e;
+  color: #f1f5f9;
+  padding: 8px 12px;
+}
+
 /* ============================================
    ANIMATIONS
    ============================================ */

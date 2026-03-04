@@ -214,6 +214,18 @@ export default function Toolbar() {
     return () => window.removeEventListener('keydown', handler)
   }, [handleSave, handleRun, handleExport])
 
+  /* ─── Click outside to close panels ─── */
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.toolbar')) {
+        setShowShortcuts(false)
+        setValidationResults(null)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
   return (
     <header className="toolbar">
       <div className="toolbar-brand">
@@ -221,7 +233,6 @@ export default function Toolbar() {
         <div>
           <div className="toolbar-title">
             AI Pipeline Builder
-            <span className="toolbar-subtitle"> v0.1</span>
           </div>
         </div>
       </div>
@@ -278,6 +289,17 @@ export default function Toolbar() {
           ⌨️
         </button>
       </div>
+
+      {/* ── Shortcuts Tooltip ── */}
+      {showShortcuts && (
+        <div className="shortcuts-panel">
+          <div className="shortcuts-title">Keyboard Shortcuts</div>
+          <div className="shortcut-row"><kbd>Ctrl+S</kbd> <span>Save pipeline</span></div>
+          <div className="shortcut-row"><kbd>Ctrl+Enter</kbd> <span>Run pipeline</span></div>
+          <div className="shortcut-row"><kbd>Ctrl+E</kbd> <span>Export as JSON</span></div>
+          <div className="shortcut-row"><kbd>Delete / Backspace</kbd> <span>Delete selected</span></div>
+        </div>
+      )}
 
       {/* ── Validation Results Dropdown ── */}
       {validationResults && (

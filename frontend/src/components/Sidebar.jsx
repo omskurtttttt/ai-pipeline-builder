@@ -139,7 +139,13 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
               <select
                 className="input"
                 value={data.provider || 'openai'}
-                onChange={(e) => handleChange('provider', e.target.value)}
+                onChange={(e) => {
+                  const provider = e.target.value
+                  handleChange('provider', provider)
+                  // Auto-switch model to the provider's default
+                  const defaultModel = provider === 'gemini' ? 'gemini-2.0-flash' : 'gpt-4o-mini'
+                  handleChange('model', defaultModel)
+                }}
               >
                 <option value="openai">OpenAI</option>
                 <option value="gemini">Google Gemini</option>
@@ -155,17 +161,17 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
               >
                 {(data.provider === 'gemini') ? (
                   <>
-                    <option value="gemini-pro">gemini-pro</option>
-                    <option value="gemini-1.5-flash">gemini-1.5-flash</option>
-                    <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                    <option value="gemini-2.0-flash">gemini-2.0-flash (free)</option>
+                    <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+                    <option value="gemini-2.5-pro">gemini-2.5-pro</option>
                   </>
                 ) : (
                   <>
-                    <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                    <option value="gpt-4">gpt-4</option>
-                    <option value="gpt-4-turbo">gpt-4-turbo</option>
+                    <option value="gpt-4o-mini">gpt-4o-mini (cheapest)</option>
                     <option value="gpt-4o">gpt-4o</option>
-                    <option value="gpt-4o-mini">gpt-4o-mini</option>
+                    <option value="gpt-4.1-nano">gpt-4.1-nano</option>
+                    <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+                    <option value="gpt-4.1">gpt-4.1</option>
                   </>
                 )}
               </select>

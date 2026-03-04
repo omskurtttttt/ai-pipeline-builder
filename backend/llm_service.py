@@ -55,37 +55,38 @@ async def call_openai(
 
 async def call_gemini(
     prompt: str,
-    model: str = "gemini-pro",
+    model: str = "gemini-2.0-flash",
     system_prompt: str = "",
     temperature: float = 0.7,
     max_tokens: int = 1024,
 ) -> str:
-    """Call Google Gemini API."""
+    """Call Google Gemini API using the new google-genai SDK."""
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise LLMError("GEMINI_API_KEY not set — add it to your .env file")
 
     try:
-        import google.generativeai as genai
+        from google import genai
 
-        genai.configure(api_key=api_key)
+        client = genai.Client(api_key=api_key)
 
-        generation_config = {
+        config = {
             "temperature": temperature,
             "max_output_tokens": max_tokens,
         }
+        if system_prompt:
+            config["system_instruction"] = system_prompt
 
-        gen_model = genai.GenerativeModel(
-            model_name=model,
-            generation_config=generation_config,
-            system_instruction=system_prompt if system_prompt else None,
+        response = client.models.generate_content(
+            model=model,
+            contents=prompt,
+            config=config,
         )
 
-        response = gen_model.generate_content(prompt)
         return response.text
 
     except ImportError:
-        raise LLMError("google-generativeai package not installed — run: pip install google-generativeai")
+        raise LLMError("google-genai package not installed — run: pip install google-genai")
     except Exception as e:
         raise LLMError(f"Gemini API error: {e}")
 
