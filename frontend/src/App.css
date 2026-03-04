@@ -251,3 +251,128 @@
   box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
   animation: pulse 2s ease-in-out infinite;
 }
+
+/* ============================================
+   ERROR BOUNDARY
+   ============================================ */
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-primary);
+}
+
+.error-boundary-content {
+  text-align: center;
+  max-width: 400px;
+  padding: 40px;
+}
+
+.error-boundary-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.error-boundary-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.error-boundary-message {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ── Node palette entrance ── */
+.node-palette-item {
+  animation: fadeIn 0.2s ease-out both;
+}
+
+.node-palette-item:nth-child(1) { animation-delay: 0.02s; }
+.node-palette-item:nth-child(2) { animation-delay: 0.04s; }
+.node-palette-item:nth-child(3) { animation-delay: 0.06s; }
+.node-palette-item:nth-child(4) { animation-delay: 0.08s; }
+.node-palette-item:nth-child(5) { animation-delay: 0.10s; }
+.node-palette-item:nth-child(6) { animation-delay: 0.12s; }
+.node-palette-item:nth-child(7) { animation-delay: 0.14s; }
+.node-palette-item:nth-child(8) { animation-delay: 0.16s; }
+
+/* ============================================
+   RESPONSIVE — TABLET (≤1024px)
+   ============================================ */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 200px;
+  }
+
+  .toolbar {
+    padding: 0 12px;
+  }
+
+  .toolbar-subtitle {
+    display: none;
+  }
+
+  .toolbar-name {
+    max-width: 140px;
+    font-size: 12px;
+  }
+
+  .node-palette-desc {
+    display: none;
+  }
+}
+
+/* ============================================
+   RESPONSIVE — MOBILE (≤768px)
+   ============================================ */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0px;
+    --toolbar-height: 48px;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .toolbar-actions .btn span:last-child {
+    display: none;
+  }
+
+  .toolbar-brand {
+    gap: 8px;
+  }
+
+  .toolbar-id {
+    display: none;
+  }
+
+  .results-panel {
+    left: 0;
+  }
+}
