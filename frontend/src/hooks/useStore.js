@@ -34,7 +34,7 @@ const useStore = create((set, get) => ({
     addNode: (type, position) => {
         const defaults = {
             inputNode: { label: 'Input', inputText: '' },
-            llmNode: { label: 'LLM', model: 'gemini-2.0-flash', provider: 'gemini', temperature: 0.7, systemPrompt: '', maxTokens: 1024 },
+            llmNode: { label: 'LLM', model: 'gemini-2.5-flash', provider: 'gemini', temperature: 0.7, systemPrompt: '', maxTokens: 1024 },
             outputNode: { label: 'Output', format: 'text' },
             textNode: { label: 'Text', template: '' },
             transformNode: { label: 'Transform', transformType: 'uppercase', pattern: '', replacement: '' },

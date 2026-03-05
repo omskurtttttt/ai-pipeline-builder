@@ -55,7 +55,7 @@ async def call_openai(
 
 async def call_gemini(
     prompt: str,
-    model: str = "gemini-2.0-flash",
+    model: str = "gemini-2.5-flash",
     system_prompt: str = "",
     temperature: float = 0.7,
     max_tokens: int = 1024,

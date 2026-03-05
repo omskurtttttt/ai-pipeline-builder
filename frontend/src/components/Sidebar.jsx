@@ -143,7 +143,7 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
                   const provider = e.target.value
                   handleChange('provider', provider)
                   // Auto-switch model to the provider's default
-                  const defaultModel = provider === 'gemini' ? 'gemini-2.0-flash' : 'gpt-4o-mini'
+                  const defaultModel = provider === 'gemini' ? 'gemini-2.5-flash' : 'gpt-4o-mini'
                   handleChange('model', defaultModel)
                 }}
               >
@@ -161,8 +161,7 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
               >
                 {(data.provider === 'gemini') ? (
                   <>
-                    <option value="gemini-2.0-flash">gemini-2.0-flash (free)</option>
-                    <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+                    <option value="gemini-2.5-flash">gemini-2.5-flash (free)</option>
                     <option value="gemini-2.5-pro">gemini-2.5-pro</option>
                   </>
                 ) : (
