@@ -61,13 +61,10 @@
 
 .toolbar-title {
   font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.3px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  letter-spacing: -0.4px;
 }
 
 .toolbar-subtitle {

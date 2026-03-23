@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ============================================
    DESIGN TOKENS
@@ -43,9 +43,10 @@
   --accent-warning: #FFC145;
   --accent-success: #4DE082;
   
-  /* ── Typography (Humanist + Mono) ── */
+  /* ── Typography (Geometric Sans + Mono) ── */
   --font-display: 'Space Grotesk', sans-serif;
   --font-ui: 'Inter', sans-serif;
+  --font-sans: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   
   /* ── Surface Semantics ── */
@@ -182,15 +183,20 @@ body {
 
 .btn-primary {
   background: var(--accent-primary);
-  border-color: var(--accent-primary);
-  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #1a1a2e; /* Darker text for readability on light purple */
+  font-weight: 700;
+  box-shadow: 0 0 20px rgba(221, 183, 255, 0.2);
 }
 
 .btn-primary:hover {
-  background: var(--accent-primary-hover);
-  border-color: var(--accent-primary-hover);
-  box-shadow: var(--shadow-glow-purple);
+  background: white;
+  color: var(--accent-primary);
+  border-color: white;
+  box-shadow: 0 0 30px rgba(221, 183, 255, 0.4);
+  transform: translateY(-1px);
 }
+
 
 .btn-success {
   background: rgba(16, 185, 129, 0.15);
