@@ -12,29 +12,17 @@
 }
 
 /* — Ambient background glow — */
-.app::before {
-  content: '';
-  position: fixed;
-  top: -30%;
-  left: -10%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
 }
 
-.app::after {
-  content: '';
-  position: fixed;
-  bottom: -20%;
-  right: -10%;
-  width: 50%;
-  height: 50%;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.04) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
+/* — Ambient background glow removed for flat charcoal look — */
 
 /* ============================================
    TOOLBAR
@@ -48,7 +36,7 @@
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: none;
   z-index: 100;
   position: relative;
 }
@@ -60,19 +48,20 @@
 }
 
 .toolbar-logo {
-  width: 32px;
-  height: 32px;
-  background: var(--gradient-primary);
-  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  box-shadow: var(--shadow-glow-purple);
+  color: var(--accent-primary);
+}
+
+.toolbar-logo svg {
+  width: 24px;
+  height: 24px;
 }
 
 .toolbar-title {
-  font-size: 15px;
+  font-family: var(--font-display);
+  font-size: 16px;
   font-weight: 600;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
@@ -117,10 +106,8 @@
    ============================================ */
 .sidebar {
   width: var(--sidebar-width);
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-right: 1px solid var(--glass-border);
+  background: var(--bg-secondary);
+  border-right: none;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

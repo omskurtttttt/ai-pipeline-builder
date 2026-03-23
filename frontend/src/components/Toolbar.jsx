@@ -229,7 +229,11 @@ export default function Toolbar() {
   return (
     <header className="toolbar">
       <div className="toolbar-brand">
-        <div className="toolbar-logo">⚡</div>
+        <div className="toolbar-logo">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 5 H 9 V 7 H 15 V 5 H 21 V 11 H 15 V 9 H 13 V 17 H 15 V 15 H 21 V 21 H 15 V 19 H 11 V 9 H 9 V 11 H 3 Z" />
+          </svg>
+        </div>
         <div>
           <div className="toolbar-title">
             AI Pipeline Builder
