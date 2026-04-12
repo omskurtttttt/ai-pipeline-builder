@@ -197,6 +197,9 @@ export default function Toolbar() {
   /* ─── Keyboard shortcuts ─── */
   useEffect(() => {
     const handler = (e) => {
+      // Don't trigger shortcuts if user is typing in an input or textarea
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return
+
       if ((e.ctrlKey || e.metaKey) && e.key === 's') {
         e.preventDefault()
         handleSave()
@@ -208,6 +211,14 @@ export default function Toolbar() {
       if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
         e.preventDefault()
         handleExport()
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault()
+        useStore.temporal.getState().undo()
+      }
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+        e.preventDefault()
+        useStore.temporal.getState().redo()
       }
     }
     window.addEventListener('keydown', handler)
@@ -301,7 +312,9 @@ export default function Toolbar() {
           <div className="shortcut-row"><kbd>Ctrl+S</kbd> <span>Save pipeline</span></div>
           <div className="shortcut-row"><kbd>Ctrl+Enter</kbd> <span>Run pipeline</span></div>
           <div className="shortcut-row"><kbd>Ctrl+E</kbd> <span>Export as JSON</span></div>
-          <div className="shortcut-row"><kbd>Delete / Backspace</kbd> <span>Delete selected</span></div>
+          <div className="shortcut-row"><kbd>Ctrl+Z</kbd> <span>Undo</span></div>
+          <div className="shortcut-row"><kbd>Ctrl+Y / Ctrl+Shift+Z</kbd> <span>Redo</span></div>
+          <div className="shortcut-row"><kbd>Backspace</kbd> <span>Delete selected</span></div>
         </div>
       )}
 

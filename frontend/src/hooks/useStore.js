@@ -1,10 +1,13 @@
 import { create } from 'zustand'
 import { applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react'
+import { temporal } from 'zundo'
 
 let nodeId = 0
 const getNodeId = () => `node_${++nodeId}`
 
-const useStore = create((set, get) => ({
+const useStore = create(
+    temporal(
+        (set, get) => ({
     /* ─── Nodes & Edges ─── */
     nodes: [],
     edges: [],
@@ -79,6 +82,12 @@ const useStore = create((set, get) => ({
     setExecuting: (running) => set({ isExecuting: running }),
     setExecutionResults: (results) => set({ executionResults: results }),
     clearExecutionResults: () => set({ executionResults: null }),
-}))
+        }),
+        {
+            partialize: (state) => ({ nodes: state.nodes, edges: state.edges }),
+            limit: 50,
+        }
+    )
+)
 
 export default useStore
