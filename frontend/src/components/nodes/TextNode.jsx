@@ -1,12 +1,13 @@
 import { Handle, Position } from '@xyflow/react'
+import { FileText } from 'lucide-react'
 import './NodeStyles.css'
 
 export default function TextNode({ data, selected }) {
   return (
     <div className={`custom-node text-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
-        <div className="node-icon" style={{ background: 'rgba(245, 158, 11, 0.15)', color: '#f59e0b' }}>
-          📝
+        <div className="node-icon">
+          <FileText size={14} strokeWidth={1.5} />
         </div>
         <div className="node-title">{data.label || 'Text'}</div>
       </div>

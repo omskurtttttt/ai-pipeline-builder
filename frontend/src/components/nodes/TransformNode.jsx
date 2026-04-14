@@ -1,14 +1,15 @@
 import { Handle, Position } from '@xyflow/react'
+import { Shuffle } from 'lucide-react'
 import './NodeStyles.css'
 
 const TRANSFORM_LABELS = {
   uppercase: 'ABC',
   lowercase: 'abc',
-  trim: '✂️',
+  trim: 'trim',
   regex_replace: '.*',
   json_extract: '{}',
-  split: '÷',
-  join: '+',
+  split: 'split',
+  join: 'join',
 }
 
 export default function TransformNode({ data, selected }) {
@@ -17,8 +18,8 @@ export default function TransformNode({ data, selected }) {
   return (
     <div className={`custom-node transform-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
-        <div className="node-icon" style={{ background: 'rgba(236, 72, 153, 0.15)', color: '#ec4899' }}>
-          🔄
+        <div className="node-icon">
+          <Shuffle size={14} strokeWidth={1.5} />
         </div>
         <div className="node-title">{data.label || 'Transform'}</div>
         <div className="node-badge">{transformType}</div>

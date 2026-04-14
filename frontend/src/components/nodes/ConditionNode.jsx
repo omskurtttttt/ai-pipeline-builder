@@ -1,12 +1,13 @@
 import { Handle, Position } from '@xyflow/react'
+import { GitBranch } from 'lucide-react'
 import './NodeStyles.css'
 
 export default function ConditionNode({ data, selected }) {
   return (
     <div className={`custom-node condition-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
-        <div className="node-icon" style={{ background: 'rgba(6, 182, 212, 0.15)', color: '#06b6d4' }}>
-          🔀
+        <div className="node-icon">
+          <GitBranch size={14} strokeWidth={1.5} />
         </div>
         <div className="node-title">{data.label || 'Condition'}</div>
         <div className="node-badge">{data.conditionType || 'contains'}</div>

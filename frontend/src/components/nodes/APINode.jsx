@@ -1,4 +1,5 @@
 import { Handle, Position } from '@xyflow/react'
+import { Globe, List } from 'lucide-react'
 import './NodeStyles.css'
 
 const METHOD_COLORS = {
@@ -16,8 +17,8 @@ export default function APINode({ data, selected }) {
   return (
     <div className={`custom-node api-node ${selected ? 'selected' : ''} ${data._executionStatus ? `exec-${data._executionStatus}` : ''}`}>
       <div className="node-header">
-        <div className="node-icon" style={{ background: `${color}15`, color }}>
-          🌐
+        <div className="node-icon">
+          <Globe size={14} strokeWidth={1.5} />
         </div>
         <div className="node-title">{data.label || 'API'}</div>
         <div className="node-badge" style={{ color, borderColor: `${color}40` }}>
@@ -35,7 +36,7 @@ export default function APINode({ data, selected }) {
         <div className="node-meta">
           {data.headers && Object.keys(data.headers).length > 0 && (
             <span className="meta-item">
-              📋 {Object.keys(data.headers).length} header(s)
+              <List size={11} strokeWidth={1.5} /> {Object.keys(data.headers).length} header(s)
             </span>
           )}
         </div>
