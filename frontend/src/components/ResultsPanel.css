@@ -8,13 +8,12 @@
   left: var(--sidebar-width);
   right: 0;
   max-height: 340px;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--glass-border);
+  background: var(--background);
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  z-index: 100;
+  z-index: 50;
   animation: slideUp 0.25s ease-out;
-  backdrop-filter: blur(20px);
 }
 
 @keyframes slideUp {
@@ -28,7 +27,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--border);
   flex-shrink: 0;
 }
 
@@ -39,9 +38,15 @@
 }
 
 .results-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .results-meta {
@@ -59,17 +64,17 @@
 
 .results-status.status-completed {
   color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
+  background: var(--muted);
 }
 
 .results-status.status-completed_with_errors {
   color: #f59e0b;
-  background: rgba(245, 158, 11, 0.1);
+  background: var(--muted);
 }
 
 .results-status.status-error {
   color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
+  background: var(--muted);
 }
 
 .results-duration {
@@ -97,7 +102,7 @@
 .loading-spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(124, 58, 237, 0.2);
+  border: 2px solid var(--muted);
   border-top-color: var(--accent-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -113,8 +118,8 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: rgba(239, 68, 68, 0.08);
-  border-bottom: 1px solid rgba(239, 68, 68, 0.15);
+  background: var(--muted);
+  border-bottom: 1px solid var(--muted);
   color: #ef4444;
   font-size: 13px;
 }
@@ -130,18 +135,18 @@
 }
 
 .result-item {
-  border-radius: var(--radius-md);
-  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
   overflow: hidden;
   transition: all var(--transition-fast);
 }
 
 .result-item:hover {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--muted);
 }
 
 .result-item.status-error {
-  border-color: rgba(239, 68, 68, 0.2);
+  border-color: var(--muted);
 }
 
 .result-item-header {
@@ -149,7 +154,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.02);
+  background: transparent;
 }
 
 .result-item-left {
@@ -159,7 +164,29 @@
 }
 
 .result-status-icon {
-  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.result-node-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--muted);
+  color: var(--foreground);
+  flex-shrink: 0;
+}
+
+.status-icon-ok {
+  color: #16a34a;
+}
+
+.status-icon-err {
+  color: var(--destructive);
 }
 
 .result-node-type {
@@ -173,7 +200,7 @@
   font-family: var(--font-mono);
   color: var(--text-tertiary);
   padding: 1px 5px;
-  background: rgba(255, 255, 255, 0.04);
+  background: transparent;
   border-radius: 3px;
 }
 
@@ -192,14 +219,15 @@
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 1.5;
-  color: var(--text-secondary);
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--radius-sm);
+  color: var(--foreground);
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   padding: 8px 10px;
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 120px;
+  max-height: 160px;
   overflow-y: auto;
 }
 
@@ -218,12 +246,12 @@
 
 .branch-label.true {
   color: #10b981;
-  background: rgba(16, 185, 129, 0.1);
+  background: var(--muted);
 }
 
 .branch-label.false {
   color: #ef4444;
-  background: rgba(239, 68, 68, 0.1);
+  background: var(--muted);
 }
 
 /* ── Node Error ── */
@@ -231,6 +259,6 @@
   padding: 6px 12px 8px;
   font-size: 11px;
   color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
-  border-top: 1px solid rgba(239, 68, 68, 0.1);
+  background: var(--muted);
+  border-top: 1px solid var(--muted);
 }

@@ -1,11 +1,38 @@
 import { useMemo } from 'react'
+import {
+  CheckCircle2,
+  XCircle,
+  Loader2,
+  BarChart2,
+  X,
+  ArrowDownToLine,
+  BrainCircuit,
+  ArrowUpFromLine,
+  FileText,
+  Shuffle,
+  GitBranch,
+  Globe,
+  HardDrive,
+  Square,
+} from 'lucide-react'
 import useStore from '../hooks/useStore'
 import './ResultsPanel.css'
 
 const STATUS_ICONS = {
-  completed: '✅',
-  error: '❌',
-  running: '⏳',
+  completed: <CheckCircle2 size={13} strokeWidth={1.5} className="status-icon-ok" />,
+  error: <XCircle size={13} strokeWidth={1.5} className="status-icon-err" />,
+  running: <Loader2 size={13} strokeWidth={1.5} className="spinning" />,
+}
+
+const NODE_ICONS = {
+  inputNode: <ArrowDownToLine size={12} strokeWidth={1.5} />,
+  llmNode: <BrainCircuit size={12} strokeWidth={1.5} />,
+  outputNode: <ArrowUpFromLine size={12} strokeWidth={1.5} />,
+  textNode: <FileText size={12} strokeWidth={1.5} />,
+  transformNode: <Shuffle size={12} strokeWidth={1.5} />,
+  conditionNode: <GitBranch size={12} strokeWidth={1.5} />,
+  apiNode: <Globe size={12} strokeWidth={1.5} />,
+  fileSaveNode: <HardDrive size={12} strokeWidth={1.5} />,
 }
 
 const TYPE_LABELS = {
@@ -16,6 +43,7 @@ const TYPE_LABELS = {
   transformNode: 'Transform',
   conditionNode: 'Condition',
   apiNode: 'API',
+  fileSaveNode: 'File Save',
 }
 
 export default function ResultsPanel() {
@@ -39,14 +67,17 @@ export default function ResultsPanel() {
       <div className="results-header">
         <div className="results-header-left">
           <div className="results-title">
-            {isExecuting ? '⏳ Running...' : '📊 Execution Results'}
+            {isExecuting
+              ? <><Loader2 size={13} strokeWidth={1.5} className="spinning" /> Running...</>
+              : <><BarChart2 size={13} strokeWidth={1.5} /> Execution Results</>
+            }
           </div>
           {executionResults && (
             <div className="results-meta">
               <span className={`results-status status-${executionResults.status}`}>
-                {executionResults.status === 'completed' && '✅ Success'}
-                {executionResults.status === 'completed_with_errors' && '⚠️ Partial'}
-                {executionResults.status === 'error' && '❌ Failed'}
+                {executionResults.status === 'completed' && <><CheckCircle2 size={11} strokeWidth={1.5} /> Success</>}
+                {executionResults.status === 'completed_with_errors' && <><XCircle size={11} strokeWidth={1.5} /> Partial</>}
+                {executionResults.status === 'error' && <><XCircle size={11} strokeWidth={1.5} /> Failed</>}
               </span>
               <span className="results-duration">
                 {executionResults.duration_ms}ms
@@ -58,7 +89,7 @@ export default function ResultsPanel() {
           )}
         </div>
         <button className="config-close" onClick={clearExecutionResults} title="Close">
-          ✕
+          <X size={14} strokeWidth={1.5} />
         </button>
       </div>
 
@@ -73,7 +104,7 @@ export default function ResultsPanel() {
       {/* ── Error Message ── */}
       {executionResults?.error && (
         <div className="results-error-banner">
-          <span>❌</span>
+          <XCircle size={13} strokeWidth={1.5} />
           <span>{executionResults.error}</span>
         </div>
       )}
@@ -85,8 +116,11 @@ export default function ResultsPanel() {
             <div key={result.nodeId} className={`result-item status-${result.status}`}>
               <div className="result-item-header">
                 <div className="result-item-left">
+                  <span className="result-node-icon">
+                    {NODE_ICONS[result.node_type] || <Square size={12} strokeWidth={1.5} />}
+                  </span>
                   <span className="result-status-icon">
-                    {STATUS_ICONS[result.status] || '⬜'}
+                    {STATUS_ICONS[result.status]}
                   </span>
                   <span className="result-node-type">
                     {TYPE_LABELS[result.node_type] || result.node_type}
@@ -96,14 +130,12 @@ export default function ResultsPanel() {
                 <span className="result-duration">{result.duration_ms}ms</span>
               </div>
 
-              {/* Output */}
+              {/* Output — scrollable, no cutoff */}
               {result.output !== null && result.output !== undefined && (
                 <div className="result-output">
                   <pre className="result-output-text">
                     {typeof result.output === 'string'
-                      ? result.output.length > 500
-                        ? result.output.substring(0, 500) + '...'
-                        : result.output
+                      ? result.output
                       : JSON.stringify(result.output, null, 2)
                     }
                   </pre>
