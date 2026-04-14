@@ -1,6 +1,25 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import useStore from '../hooks/useStore'
 import { savePipeline, updatePipeline, listPipelines, loadPipeline, deletePipeline, executePipeline, getProviders, validatePipeline } from '../utils/api'
+import {
+  FilePlus,
+  Save,
+  FolderOpen,
+  Download,
+  Upload,
+  Play,
+  Loader2,
+  Search,
+  Sun,
+  Moon,
+  Keyboard,
+  Trash2,
+  CheckCircle2,
+  AlertTriangle,
+  Info,
+  X,
+  Workflow,
+} from 'lucide-react'
 import './Toolbar.css'
 
 export default function Toolbar() {
@@ -19,6 +38,21 @@ export default function Toolbar() {
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState(null) // { type, message }
   const [providers, setProviders] = useState({ openai: false, gemini: false })
+
+  /* ─── Light/Dark Mode ─── */
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  })
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    }
+  }, [isDarkMode])
 
   /* ─── Check LLM provider availability on mount ─── */
   useEffect(() => {
@@ -241,13 +275,11 @@ export default function Toolbar() {
     <header className="toolbar">
       <div className="toolbar-brand">
         <div className="toolbar-logo">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 5 H 9 V 7 H 15 V 5 H 21 V 11 H 15 V 9 H 13 V 17 H 15 V 15 H 21 V 21 H 15 V 19 H 11 V 9 H 9 V 11 H 3 Z" />
-          </svg>
+          <Workflow size={14} strokeWidth={1.5} />
         </div>
         <div>
           <div className="toolbar-title">
-            AI Pipeline Builder
+            AI <span className="toolbar-title-accent">Pipeline</span> Builder
           </div>
         </div>
       </div>
@@ -266,20 +298,20 @@ export default function Toolbar() {
       {/* ── Actions ── */}
       <div className="toolbar-actions">
         <button className="btn" onClick={handleNew} title="New Pipeline (fresh canvas)">
-          <span>📄</span> New
+          <FilePlus size={14} strokeWidth={1.5} /> New
         </button>
         <button className="btn" onClick={handleSave} disabled={saving} title="Save Pipeline (Ctrl+S)">
-          <span>{saving ? '⏳' : '💾'}</span> {saving ? 'Saving...' : 'Save'}
+          {saving ? <Loader2 size={14} strokeWidth={1.5} className="spinning" /> : <Save size={14} strokeWidth={1.5} />} {saving ? 'Saving...' : 'Save'}
         </button>
         <button className="btn" onClick={handleOpenLoad} title="Load Pipeline">
-          <span>📂</span> Load
+          <FolderOpen size={14} strokeWidth={1.5} /> Load
         </button>
         <div className="toolbar-divider" />
         <button className="btn" onClick={handleExport} title="Export Pipeline as JSON (Ctrl+E)">
-          <span>⬇️</span> Export
+          <Download size={14} strokeWidth={1.5} /> Export
         </button>
         <button className="btn" onClick={handleImport} title="Import Pipeline from JSON">
-          <span>⬆️</span> Import
+          <Upload size={14} strokeWidth={1.5} /> Import
         </button>
         <input
           ref={fileInputRef}
@@ -293,15 +325,18 @@ export default function Toolbar() {
           <span className={`provider-dot ${providers.openai ? 'active' : ''}`}>O</span>
           <span className={`provider-dot ${providers.gemini ? 'active' : ''}`}>G</span>
         </div>
-        <button className="btn btn-primary" onClick={handleRun} disabled={isExecuting} title="Run Pipeline (Ctrl+Enter)">
-          <span>{isExecuting ? '⏳' : '▶️'}</span> {isExecuting ? 'Running...' : 'Run'}
+        <button className="btn btn-run" onClick={handleRun} disabled={isExecuting} title="Run Pipeline (Ctrl+Enter)">
+          {isExecuting ? <Loader2 size={14} strokeWidth={1.5} className="spinning" /> : <Play size={14} strokeWidth={1.5} fill="currentColor" />} {isExecuting ? 'Running...' : 'Run'}
         </button>
         <button className={`btn ${validationResults ? (validationResults.valid ? 'btn-success' : 'btn-warning') : ''}`} onClick={handleAnalyze} disabled={isAnalyzing} title="Analyze Pipeline">
-          <span>{isAnalyzing ? '⏳' : '🔍'}</span> {isAnalyzing ? 'Analyzing...' : 'Analyze'}
+          {isAnalyzing ? <Loader2 size={14} strokeWidth={1.5} className="spinning" /> : <Search size={14} strokeWidth={1.5} />} {isAnalyzing ? 'Analyzing...' : 'Analyze'}
         </button>
         <div className="toolbar-divider" />
+        <button className="btn btn-ghost" onClick={() => setIsDarkMode(!isDarkMode)} title="Toggle Dark/Light Mode">
+          {isDarkMode ? <Sun size={14} strokeWidth={1.5} /> : <Moon size={14} strokeWidth={1.5} />}
+        </button>
         <button className="btn btn-ghost" onClick={() => { setShowShortcuts(!showShortcuts); setValidationResults(null) }} title="Keyboard Shortcuts">
-          ⌨️
+          <Keyboard size={14} strokeWidth={1.5} />
         </button>
       </div>
 
@@ -323,18 +358,21 @@ export default function Toolbar() {
         <div className="validation-panel">
           <div className="validation-header">
             <div className="validation-summary">
-              {validationResults.valid ? '✅' : '⚠️'} {validationResults.summary}
+              {validationResults.valid
+                ? <CheckCircle2 size={14} strokeWidth={1.5} style={{display:'inline', marginRight:4}} />
+                : <AlertTriangle size={14} strokeWidth={1.5} style={{display:'inline', marginRight:4}} />}
+              {validationResults.summary}
             </div>
-            <button className="config-close" onClick={() => setValidationResults(null)}>✕</button>
+            <button className="config-close" onClick={() => setValidationResults(null)}><X size={14} strokeWidth={1.5} /></button>
           </div>
           {validationResults.issues.length > 0 && (
             <div className="validation-issues">
               {validationResults.issues.map((issue, i) => (
                 <div key={i} className={`validation-issue severity-${issue.severity}`}>
                   <span className="issue-icon">
-                    {issue.severity === 'error' && '❌'}
-                    {issue.severity === 'warning' && '⚠️'}
-                    {issue.severity === 'info' && 'ℹ️'}
+                    {issue.severity === 'error' && <X size={12} strokeWidth={2} />}
+                    {issue.severity === 'warning' && <AlertTriangle size={12} strokeWidth={2} />}
+                    {issue.severity === 'info' && <Info size={12} strokeWidth={2} />}
                   </span>
                   <span>{issue.message}</span>
                 </div>
@@ -350,9 +388,9 @@ export default function Toolbar() {
       {/* ── Status Toast ── */}
       {status && (
         <div className={`toolbar-toast toast-${status.type}`}>
-          {status.type === 'success' && '✅'}
-          {status.type === 'error' && '❌'}
-          {status.type === 'info' && 'ℹ️'}
+          {status.type === 'success' && <CheckCircle2 size={14} strokeWidth={1.5} />}
+          {status.type === 'error' && <X size={14} strokeWidth={1.5} />}
+          {status.type === 'info' && <Info size={14} strokeWidth={1.5} />}
           {' '}{status.message}
         </div>
       )}
@@ -363,7 +401,7 @@ export default function Toolbar() {
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3 className="modal-title">Load Pipeline</h3>
-              <button className="config-close" onClick={() => setShowLoadModal(false)}>✕</button>
+              <button className="config-close" onClick={() => setShowLoadModal(false)}><X size={14} strokeWidth={1.5} /></button>
             </div>
             <div className="modal-body">
               {savedPipelines.length === 0 ? (
@@ -379,7 +417,7 @@ export default function Toolbar() {
                         </div>
                       </div>
                       <button className="btn-icon-sm" onClick={(e) => handleDelete(p.id, e)} title="Delete">
-                        🗑️
+                        <Trash2 size={13} strokeWidth={1.5} />
                       </button>
                     </div>
                   ))}
