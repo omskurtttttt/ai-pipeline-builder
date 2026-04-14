@@ -1,5 +1,15 @@
 import { useCallback } from 'react'
 import useStore from '../hooks/useStore'
+import {
+  ArrowDownToLine,
+  BrainCircuit,
+  ArrowUpFromLine,
+  FileText,
+  Shuffle,
+  GitBranch,
+  Globe,
+  HardDrive,
+} from 'lucide-react'
 import './Sidebar.css'
 
 /* ─── Node type definitions ─── */
@@ -8,56 +18,56 @@ const NODE_TYPES = [
     type: 'inputNode',
     label: 'Input',
     description: 'Data entry point',
-    icon: '📥',
+    icon: <ArrowDownToLine size={16} strokeWidth={1.5} />,
     color: '#10b981',
   },
   {
     type: 'llmNode',
     label: 'LLM',
     description: 'AI language model',
-    icon: '🧠',
+    icon: <BrainCircuit size={16} strokeWidth={1.5} />,
     color: '#7c3aed',
   },
   {
     type: 'outputNode',
     label: 'Output',
     description: 'Display results',
-    icon: '📤',
+    icon: <ArrowUpFromLine size={16} strokeWidth={1.5} />,
     color: '#3b82f6',
   },
   {
     type: 'textNode',
     label: 'Text',
     description: 'Static text / template',
-    icon: '📝',
+    icon: <FileText size={16} strokeWidth={1.5} />,
     color: '#f59e0b',
   },
   {
     type: 'transformNode',
     label: 'Transform',
     description: 'Transform data',
-    icon: '🔄',
+    icon: <Shuffle size={16} strokeWidth={1.5} />,
     color: '#ec4899',
   },
   {
     type: 'conditionNode',
     label: 'Condition',
     description: 'Branch on condition',
-    icon: '🔀',
+    icon: <GitBranch size={16} strokeWidth={1.5} />,
     color: '#06b6d4',
   },
   {
     type: 'apiNode',
     label: 'API',
     description: 'HTTP request',
-    icon: '🌐',
+    icon: <Globe size={16} strokeWidth={1.5} />,
     color: '#f97316',
   },
   {
     type: 'fileSaveNode',
     label: 'File Save',
     description: 'Save output to file',
-    icon: '💾',
+    icon: <HardDrive size={16} strokeWidth={1.5} />,
     color: '#a855f7',
   },
 ]
@@ -88,8 +98,9 @@ function ConfigPanel({ node, updateNodeData, onClose }) {
           <div
             className="config-icon"
             style={{
-              background: `${NODE_COLORS[type]}20`,
-              color: NODE_COLORS[type],
+              background: 'var(--muted)',
+              color: 'var(--foreground)',
+              border: '1px solid var(--border)',
             }}
           >
             {NODE_ICONS[type]}
@@ -510,7 +521,7 @@ export default function Sidebar() {
               >
                 <div
                   className="node-palette-icon"
-                  style={{ background: `${node.color}20`, color: node.color }}
+                  style={{ background: 'var(--muted)', color: 'var(--foreground)', border: '1px solid var(--border)' }}
                 >
                   {node.icon}
                 </div>
