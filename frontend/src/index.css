@@ -4,86 +4,186 @@
    DESIGN TOKENS
    ============================================ */
 :root {
-  /* — Background palette (deep dark) — */
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a2e;
-  --bg-elevated: #16162a;
+  /* User Theme */
+  --card: #ffffff;
+  --ring: #a1a1a1;
+  --input: #e5e5e5;
+  --muted: #f5f5f5;
+  --accent: #f5f5f5;
+  --border: #e5e5e5;
+  --radius: 0rem;
+  --chart-1: #737373;
+  --chart-2: #737373;
+  --chart-3: #737373;
+  --chart-4: #737373;
+  --chart-5: #737373;
+  --popover: #ffffff;
+  --primary: #737373;
+  --sidebar: #fafafa;
+  --font-mono: Geist Mono, monospace;
+  --font-sans: Geist Mono, monospace;
+  --secondary: #f5f5f5;
+  --background: #ffffff;
+  --font-serif: Geist Mono, monospace;
+  --foreground: #0a0a0a;
+  --destructive: #e7000b;
+  --shadow-blur: 0px;
+  --shadow-color: hsl(0 0% 0%);
+  --sidebar-ring: #a1a1a1;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0;
+  --sidebar-accent: #f5f5f5;
+  --sidebar-border: #e5e5e5;
+  --card-foreground: #0a0a0a;
+  --shadow-offset-x: 0px;
+  --shadow-offset-y: 1px;
+  --sidebar-primary: #171717;
+  --muted-foreground: #717171;
+  --accent-foreground: #171717;
+  --popover-foreground: #0a0a0a;
+  --primary-foreground: #fafafa;
+  --sidebar-foreground: #0a0a0a;
+  --secondary-foreground: #171717;
+  --destructive-foreground: #f5f5f5;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-primary-foreground: #fafafa;
 
-  /* — Glass effect — */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-bg-hover: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(255, 255, 255, 0.15);
-  --glass-blur: 20px;
+  /* App legacy tokens mapped to theme */
+  --bg-primary: var(--background);
+  --bg-secondary: var(--sidebar);
+  --bg-tertiary: var(--card);
+  --bg-elevated: var(--popover);
+  --bg-hover: var(--accent);
+  --bg-input: var(--input);
+  
+  --glass-bg: var(--card);
+  --glass-bg-hover: var(--accent);
+  --glass-border: var(--border);
+  --glass-border-hover: var(--ring);
+  --glass-blur: 0px;
 
-  /* — Accent colors — */
-  --accent-primary: #7c3aed;
-  --accent-primary-hover: #8b5cf6;
-  --accent-secondary: #06b6d4;
+  --accent-primary: var(--primary);
+  --accent-primary-hover: var(--ring);
+  --accent-secondary: var(--secondary);
   --accent-success: #10b981;
   --accent-warning: #f59e0b;
-  --accent-error: #ef4444;
-  /* ── Essential Geometry ── */
+  --accent-error: var(--destructive);
+
+  --font-display: var(--font-sans);
+  --font-ui: var(--font-sans);
+
+  --text-primary: var(--foreground);
+  --text-secondary: var(--muted-foreground);
+  --text-tertiary: var(--muted-foreground);
+
+  /* Essential Geometry */
   --sidebar-width: 260px;
   --toolbar-height: 64px;
-  
-  /* ── Obsidian Architect Palette ── */
-  --bg-primary: #131313;    /* Deep space foundation */
-  --bg-secondary: #1C1B1B;  /* Sidebar / Panels */
-  --bg-tertiary: #201F1F;   /* Nodes / Cards */
-  --bg-hover: #2A2A2A;      /* Interactive hover surfaces */
-  --bg-input: #0e0e0e;      /* Sunken input fields */
-  
-  /* ── Accent System (Neon Kinetic) ── */
-  --accent-primary: #DDB7FF;   /* Soft Purple Glow */
-  --accent-secondary: #4DE082; /* Kinetic Green */
-  --accent-tertiary: #ADC6FF;  /* Cold Blue */
-  --accent-error: #FF6E6E;
-  --accent-warning: #FFC145;
-  --accent-success: #4DE082;
-  
-  /* ── Typography (Geometric Sans + Mono) ── */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-ui: 'Inter', sans-serif;
-  --font-sans: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  
-  /* ── Surface Semantics ── */
-  --text-primary: #e5e2e1;
-  --text-secondary: #cfc2d6; /* Tonal variation */
-  --text-tertiary: #8a818e;
-  
-  /* ── Glass & Depth (The No-Line Rule) ── */
-  --glass-bg: rgba(28, 27, 27, 0.8);
-  --glass-bg-hover: rgba(42, 42, 42, 0.9);
-  --glass-border: rgba(255, 255, 255, 0.04);
-  --glass-blur: 16px;
-  
-  /* ── Material Spec ── */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+
+  /* Material Spec */
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
   --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-medium: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* ── Shadows & Glows ── */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --shadow-glow-purple: 0 0 20px rgba(221, 183, 255, 0.2);
-  --shadow-glow-green: 0 0 20px rgba(77, 224, 130, 0.15);
-  --shadow-node: 0 0 0 1px var(--glass-border), 0 12px 32px -4px rgba(0, 0, 0, 0.5);
-  --shadow-node-active: 0 0 0 2px var(--accent-primary), 0 12px 48px -4px rgba(221, 183, 255, 0.15);
+
+  /* Shadows */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-glow-purple: none;
+  --shadow-glow-green: none;
+  --shadow-node: 0 0 0 1px var(--border);
+  --shadow-node-active: 0 0 0 2px var(--ring);
 
   /* React Flow Overrides */
-  --xy-node-background-color: var(--bg-tertiary);
-  --xy-node-color: var(--text-primary);
-  --xy-handle-background-color: var(--accent-primary);
-  --xy-handle-border-color: var(--bg-primary);
-  --xy-selection-color: var(--accent-primary);
-  --xy-edge-stroke: var(--text-tertiary);
-  --xy-edge-stroke-selected: var(--accent-primary);
+  --xy-node-background-color: var(--card);
+  --xy-node-color: var(--foreground);
+  --xy-handle-background-color: var(--primary);
+  --xy-handle-border-color: var(--background);
+  --xy-selection-color: var(--primary);
+  --xy-edge-stroke: var(--border);
+  --xy-edge-stroke-selected: var(--primary);
+}
+
+.dark {
+  --card: #191919;
+  --ring: #737373;
+  --input: #525252;
+  --muted: #262626;
+  --accent: #404040;
+  --border: #383838;
+  --chart-1: #737373;
+  --chart-2: #737373;
+  --chart-3: #737373;
+  --chart-4: #737373;
+  --chart-5: #737373;
+  --popover: #262626;
+  --primary: #737373;
+  --sidebar: #171717;
+  --secondary: #262626;
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --destructive: #ff6467;
+  --sidebar-ring: #525252;
+  --sidebar-accent: #262626;
+  --sidebar-border: #ffffff;
+  --card-foreground: #fafafa;
+  --sidebar-primary: #fafafa;
+  --muted-foreground: #a1a1a1;
+  --accent-foreground: #fafafa;
+  --popover-foreground: #fafafa;
+  --primary-foreground: #fafafa;
+  --sidebar-foreground: #fafafa;
+  --secondary-foreground: #fafafa;
+  --destructive-foreground: #262626;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-primary-foreground: #171717;
+}
+
+@theme inline {
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-radius: var(--radius);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-popover: var(--popover);
+  --color-primary: var(--primary);
+  --color-sidebar: var(--sidebar);
+  --color-font-mono: var(--font-mono);
+  --color-font-sans: var(--font-sans);
+  --color-secondary: var(--secondary);
+  --color-background: var(--background);
+  --color-font-serif: var(--font-serif);
+  --color-foreground: var(--foreground);
+  --color-destructive: var(--destructive);
+  --color-shadow-blur: var(--shadow-blur);
+  --color-shadow-color: var(--shadow-color);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-shadow-spread: var(--shadow-spread);
+  --color-shadow-opacity: var(--shadow-opacity);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-card-foreground: var(--card-foreground);
+  --color-shadow-offset-x: var(--shadow-offset-x);
+  --color-shadow-offset-y: var(--shadow-offset-y);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
 }
 
 /* ============================================
@@ -105,11 +205,21 @@ html, body, #root {
 
 body {
   font-family: var(--font-sans);
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  background: var(--background);
+  color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
+}
+
+/* ── Global spin utility ── */
+@keyframes spin-global {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin-global 1s linear infinite;
 }
 
 /* ============================================
@@ -137,18 +247,17 @@ body {
    GLASS CARD UTILITY
    ============================================ */
 .glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-normal);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--transition-fast);
 }
 
 .glass-card:hover {
-  background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
+  background: var(--accent);
+  border-color: var(--border);
 }
+
 
 /* ============================================
    BUTTON UTILITIES
@@ -159,10 +268,10 @@ body {
   justify-content: center;
   gap: 8px;
   padding: 8px 16px;
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  background: var(--glass-bg);
-  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  color: var(--foreground);
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 500;
@@ -172,9 +281,8 @@ body {
 }
 
 .btn:hover {
-  background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
-  transform: translateY(-1px);
+  background: var(--accent);
+  border-color: var(--border);
 }
 
 .btn:active {
@@ -182,30 +290,28 @@ body {
 }
 
 .btn-primary {
-  background: var(--accent-primary);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #1a1a2e; /* Darker text for readability on light purple */
-  font-weight: 700;
-  box-shadow: 0 0 20px rgba(221, 183, 255, 0.2);
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 500;
 }
 
 .btn-primary:hover {
-  background: white;
-  color: var(--accent-primary);
-  border-color: white;
-  box-shadow: 0 0 30px rgba(221, 183, 255, 0.4);
-  transform: translateY(-1px);
+  background: var(--primary);
+  opacity: 0.9;
+  color: var(--primary-foreground);
+  border-color: var(--primary);
 }
 
 
 .btn-success {
-  background: rgba(16, 185, 129, 0.15);
-  border-color: var(--accent-success);
-  color: var(--accent-success);
+  background: var(--background);
+  border-color: var(--chart-2);
+  color: var(--chart-2);
 }
 
 .btn-success:hover {
-  background: rgba(16, 185, 129, 0.25);
+  background: var(--muted);
 }
 
 /* ============================================
@@ -214,10 +320,10 @@ body {
 .input {
   width: 100%;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--foreground);
   font-family: var(--font-sans);
   font-size: 13px;
   outline: none;
@@ -225,12 +331,12 @@ body {
 }
 
 .input:focus {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  border-color: var(--ring);
+  box-shadow: 0 0 0 1px var(--ring);
 }
 
 .input::placeholder {
-  color: var(--text-tertiary);
+  color: var(--muted-foreground);
 }
 
 textarea.input {
@@ -251,8 +357,8 @@ select.input {
 }
 
 select.input option {
-  background: #1a1a2e;
-  color: #f1f5f9;
+  background: var(--background);
+  color: var(--foreground);
   padding: 8px 12px;
 }
 

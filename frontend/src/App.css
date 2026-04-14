@@ -33,10 +33,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur));
-  -webkit-backdrop-filter: blur(var(--glass-blur));
-  border-bottom: none;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
   z-index: 100;
   position: relative;
 }
@@ -51,20 +49,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-primary);
+  color: var(--foreground);
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--muted);
 }
 
 .toolbar-logo svg {
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
 }
 
 .toolbar-title {
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--accent-primary);
-  letter-spacing: -0.4px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toolbar-title-accent {
+  color: var(--muted-foreground);
+  font-weight: 400;
 }
 
 .toolbar-subtitle {
@@ -104,7 +113,7 @@
 .sidebar {
   width: var(--sidebar-width);
   background: var(--bg-secondary);
-  border-right: none;
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -232,7 +241,7 @@
   height: 8px;
   border-radius: 50%;
   background: var(--accent-success);
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
+  box-shadow: none;
   animation: pulse 2s ease-in-out infinite;
 }
 
