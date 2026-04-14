@@ -7,6 +7,7 @@ import {
   BackgroundVariant,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
+import { Link2 } from 'lucide-react'
 
 import InputNode from './nodes/InputNode'
 import LLMNode from './nodes/LLMNode'
@@ -115,15 +116,15 @@ export default function Canvas() {
         proOptions={{ hideAttribution: true }}
         defaultEdgeOptions={{
           type: 'smoothstep',
-          animated: true,
-          style: { stroke: '#7c3aed', strokeWidth: 2 },
+          animated: false,
+          style: { stroke: 'var(--border)', strokeWidth: 1.5 },
         }}
       >
         <Background
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1}
-          color="rgba(255, 255, 255, 0.05)"
+          color="var(--border)"
         />
         <Controls className="canvas-controls" />
         <MiniMap
@@ -142,14 +143,16 @@ export default function Canvas() {
             }
           }}
           maskColor="rgba(0, 0, 0, 0.7)"
-          style={{ background: 'rgba(18, 18, 26, 0.9)' }}
+          style={{ background: 'var(--card)' }}
         />
       </ReactFlow>
 
       {/* Empty state overlay — only show when no nodes */}
       {nodes.length === 0 && (
         <div className="canvas-empty">
-          <div className="canvas-empty-icon">🔗</div>
+          <div className="canvas-empty-icon">
+            <Link2 size={32} strokeWidth={1} />
+          </div>
           <div className="canvas-empty-title">Build Your Pipeline</div>
           <div className="canvas-empty-subtitle">
             Drag nodes from the sidebar and connect them to create an AI processing workflow
