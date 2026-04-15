@@ -4,26 +4,28 @@
 
 /* — Controls panel — */
 .canvas-controls {
-  background: rgba(18, 18, 26, 0.9) !important;
-  
-  border: 1px solid var(--muted) !important;
+  background: var(--background) !important;
+  border: 1px solid var(--border) !important;
   border-radius: 10px !important;
-  box-shadow: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   overflow: hidden;
+  z-index: 51 !important;
+  position: absolute !important;
+  pointer-events: auto !important;
 }
 
 .canvas-controls button {
   background: transparent !important;
-  border-bottom: 1px solid var(--muted) !important;
-  color: #94a3b8 !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text-secondary) !important;
   width: 32px !important;
   height: 32px !important;
   transition: all 0.15s ease !important;
 }
 
 .canvas-controls button:hover {
-  background: var(--accent) !important;
-  color: #f1f5f9 !important;
+  background: var(--muted) !important;
+  color: var(--accent-primary) !important;
 }
 
 .canvas-controls button svg {
@@ -32,26 +34,30 @@
 
 /* — MiniMap — */
 .canvas-minimap {
-  border: 1px solid var(--muted) !important;
+  border: 1px solid var(--border) !important;
   border-radius: 10px !important;
-  box-shadow: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
   overflow: hidden !important;
+  background: var(--muted) !important;
+  z-index: 51 !important;
+  position: absolute !important;
+  pointer-events: auto !important;
 }
 
 /* — Edges — */
 .react-flow__edge-path {
-  stroke: #7c3aed;
+  stroke: var(--accent-primary) !important;
   stroke-width: 2;
 }
 
 .react-flow__edge.selected .react-flow__edge-path {
-  stroke: #8b5cf6;
+  stroke: var(--accent-primary-hover) !important;
   stroke-width: 3;
 }
 
 /* — Connection line while dragging — */
 .react-flow__connection-path {
-  stroke: #7c3aed !important;
+  stroke: var(--accent-primary) !important;
   stroke-width: 2 !important;
   stroke-dasharray: 5 5;
 }
@@ -59,5 +65,26 @@
 /* — Selection box — */
 .react-flow__selection {
   background: var(--accent) !important;
-  border: 1px solid var(--muted) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* — Nodes — */
+.react-flow__node {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.react-flow__node.selected {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 2px var(--muted) !important;
+}
+
+.react-flow__node-input,
+.react-flow__node-output,
+.react-flow__node-default {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--foreground) !important;
 }

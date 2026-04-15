@@ -3,11 +3,8 @@
    ============================================ */
 
 .results-panel {
-  position: fixed;
-  bottom: 0;
-  left: var(--sidebar-width);
-  right: 0;
-  max-height: 340px;
+  position: relative;
+  max-height: 60vh;
   background: var(--background);
   border-top: 1px solid var(--border);
   display: flex;
@@ -17,8 +14,14 @@
 }
 
 @keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ── Header ── */
@@ -35,6 +38,60 @@
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.results-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.config-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+  outline: none;
+  flex-shrink: 0;
+}
+
+.config-toggle:hover {
+  background: var(--muted);
+  border-color: var(--text-secondary);
+  color: var(--accent-primary);
+}
+
+.config-toggle:active {
+  transform: scale(0.95);
+}
+
+.config-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.config-close:hover {
+  background: var(--destructive);
+  border-color: var(--destructive);
+  color: white;
 }
 
 .results-title {
@@ -109,7 +166,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ── Error Banner ── */
@@ -137,8 +196,10 @@
 .result-item {
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  overflow: hidden;
+  overflow: visible;
   transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
 }
 
 .result-item:hover {
@@ -213,6 +274,8 @@
 /* ── Output ── */
 .result-output {
   padding: 0 12px 8px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .result-output-text {
@@ -227,7 +290,11 @@
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 160px;
+  overflow-wrap: break-word;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  max-height: 300px;
   overflow-y: auto;
 }
 

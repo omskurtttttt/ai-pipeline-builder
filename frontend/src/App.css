@@ -145,6 +145,8 @@
   flex: 1;
   position: relative;
   background: var(--bg-primary);
+  overflow: hidden;
+  z-index: 1;
 }
 
 /* — Canvas empty state — */
