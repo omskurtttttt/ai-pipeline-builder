@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import {
   CheckCircle2,
   XCircle,
@@ -14,6 +14,7 @@ import {
   Globe,
   HardDrive,
   Square,
+  ChevronDown,
 } from 'lucide-react'
 import useStore from '../hooks/useStore'
 import './ResultsPanel.css'
@@ -47,6 +48,7 @@ const TYPE_LABELS = {
 }
 
 export default function ResultsPanel() {
+  const [isCollapsed, setIsCollapsed] = useState(false)
   const executionResults = useStore((s) => s.executionResults)
   const isExecuting = useStore((s) => s.isExecuting)
   const clearExecutionResults = useStore((s) => s.clearExecutionResults)
@@ -88,13 +90,22 @@ export default function ResultsPanel() {
             </div>
           )}
         </div>
-        <button className="config-close" onClick={clearExecutionResults} title="Close">
-          <X size={14} strokeWidth={1.5} />
-        </button>
+        <div className="results-header-actions">
+          <button 
+            className="config-toggle" 
+            onClick={() => setIsCollapsed(!isCollapsed)} 
+            title={isCollapsed ? "Show results" : "Minimize"}
+          >
+            <ChevronDown size={14} strokeWidth={1.5} style={{ transform: isCollapsed ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </button>
+          <button className="config-close" onClick={clearExecutionResults} title="Close and clear">
+            <X size={14} strokeWidth={1.5} />
+          </button>
+        </div>
       </div>
 
       {/* ── Loading State ── */}
-      {isExecuting && (
+      {!isCollapsed && isExecuting && (
         <div className="results-loading">
           <div className="loading-spinner" />
           <span>Executing pipeline...</span>
@@ -102,7 +113,7 @@ export default function ResultsPanel() {
       )}
 
       {/* ── Error Message ── */}
-      {executionResults?.error && (
+      {!isCollapsed && executionResults?.error && (
         <div className="results-error-banner">
           <XCircle size={13} strokeWidth={1.5} />
           <span>{executionResults.error}</span>
@@ -110,7 +121,7 @@ export default function ResultsPanel() {
       )}
 
       {/* ── Node Results ── */}
-      {nodeResults.length > 0 && (
+      {!isCollapsed && nodeResults.length > 0 && (
         <div className="results-list">
           {nodeResults.map((result) => (
             <div key={result.nodeId} className={`result-item status-${result.status}`}>

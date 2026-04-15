@@ -213,7 +213,7 @@ async def run_llm_node(data: dict, inputs: list[str]) -> str:
     prompt = "\n".join(inputs) if inputs else ""
     system_prompt = data.get("systemPrompt", "")
     temperature = data.get("temperature", 0.7)
-    max_tokens = data.get("maxTokens", 1024)
+    max_tokens = data.get("maxTokens", 4096)
 
     if not prompt.strip():
         return "[No input provided to LLM]"
